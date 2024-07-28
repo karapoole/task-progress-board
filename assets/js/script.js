@@ -8,10 +8,42 @@ function generateTaskId() {
 }
 
 // Todo: create a function to create a task card
-function createTaskCard(task) {}
+function createTaskCard(task) {
+  let deadline = dayjs(task.deadline);
+  let currentDate = dayjs();
+
+  const cardBox = $("<div>");
+  cardBox.addClass("card draggable mb-2 task-card ${taskDeadlineColor}");
+  cardBox.attr("data-id", "${task.id}");
+  const cardBody = $("<div>");
+  cardBody.addClass("card-body");
+  const cardTitle = $("<h5>");
+  cardTitle.addClass("card-title");
+  const cardText = $("<p>");
+  cardText.addClass("card-text");
+  const cardDeadline = $("<p>");
+  cardDeadline.addClass("card-text text-muted");
+  const cardDeleteBtn = $("<button>");
+  cardDeleteBtn.addClass("btn btn-sm btn-danger float-end delete-task");
+  cardDeleteBtn.attr("${task.id}");
+  cardBody.append(cardTitle);
+  cardBody.append(cardText);
+  cardBody.append(cardDeadline);
+  cardBody.append(cardDeleteBtn);
+  cardBox.append(cardBody);
+}
 
 // Todo: create a function to render the task list and make cards draggable
-function renderTaskList() {}
+function renderTaskList() {
+  $("#to-do .droppable").empty();
+  $("#in-progress .droppable").empty();
+  $("#done .droppable").empty();
+
+  for (let i = 0; i > taskList.length; i++) {
+    const currentTask = taskList[i];
+    const currentCard = createTaskCard(currentTask);
+  }
+}
 
 // Todo: create a function to handle adding a new task
 function handleAddTask(event) {
@@ -20,13 +52,12 @@ function handleAddTask(event) {
   const taskDescription = $("#task-description").val();
   const taskDeadline = $("#task-deadline").val();
 
-  console.log("Got the info!");
   const newTask = {
     id: generateTaskId(),
     title: taskTitle,
     description: taskDescription,
     deadline: taskDeadline,
-    status: "todo",
+    status: "to-do",
   };
 
   taskList.push(newTask);
@@ -46,11 +77,3 @@ function handleDrop(event, ui) {}
 $(document).ready(function () {
   $("#newTaskForm").on("submit", handleAddTask);
 });
-
-// modal
-// const formModal = document.getElementById("formModal");
-// if (formModal) {
-//   formModal.addEventListener("show.bs.modal", (event) => {
-//     modalBodyInput.value = recipient;
-//   });
-// }
