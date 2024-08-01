@@ -21,6 +21,32 @@ If your README is long, add a table of contents to make it easy for users to fin
 
 ## Usage
 
+### Modal
+
+![alt text](./assets/images/modal.png)
+
+### Date Picker
+
+![alt text](./assets/images/date-picker.png)
+
+### Color Coded Cards
+
+![alt text](./assets/images/color-coded-cards.png)
+
+### Overdue White Card in Done Column
+
+![alt text](./assets/images/white-card-done.png)
+
+## Application
+
+### Deployed Application URL:
+
+https://karapoole.github.io/task-progress-board/
+
+### Deployed Application Screenshot:
+
+![alt text](./assets/images/deployed-application.png)
+
 ## Credits
 
 edX curriculum
