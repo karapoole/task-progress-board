@@ -146,6 +146,12 @@ function handleAddTask(event) {
 
   // selects modal by id, modal method "hides" modal
   $("#formModal").modal("hide");
+
+  // clears user input from modal
+  $("#task-title").val(``);
+  $("#task-description").val(``);
+  $("#task-deadline").val(``);
+
   // calls function that loads tasks into lanes
   renderTaskList();
 }
