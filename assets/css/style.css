@@ -1,0 +1,30 @@
+body {
+  font-family: "Open Sans", sans-serif;
+  font-size: 16px;
+}
+
+.swim-lanes {
+  min-height: 60vh;
+}
+
+.task-card {
+  margin: 0 auto;
+}
+
+.task-card:hover {
+  cursor: grab;
+}
+
+/* makes past due tasks red */
+.past-due {
+  background-color: red;
+}
+/* makes do soon tasks yellow */
+.due-soon {
+  background-color: yellow;
+}
+
+/* makes completed tasks white */
+.on-track {
+  background-color: white;
+}
