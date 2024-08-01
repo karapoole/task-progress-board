@@ -15,14 +15,16 @@ body {
   cursor: grab;
 }
 
+/* makes past due tasks red */
 .past-due {
   background-color: red;
 }
-
+/* makes do soon tasks yellow */
 .due-soon {
   background-color: yellow;
 }
 
+/* makes completed tasks white */
 .on-track {
   background-color: white;
 }

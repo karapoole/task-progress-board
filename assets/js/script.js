@@ -9,11 +9,13 @@ function generateTaskId() {
 
 // Todo: create a function to create a task card
 function createTaskCard(task) {
-  console.log("Made it here");
   let deadline = dayjs(task.deadline);
   let currentDate = dayjs();
+  // use diff method to calculate date range (closeness to deadline)
   let dateRange = currentDate.diff(deadline, "day");
   let taskDeadlineColor;
+
+  // assigns color based on date range (closeness to deadline)
   if (task.status !== "done") {
     if (dateRange > 0) {
       taskDeadlineColor = "past-due";
@@ -26,28 +28,41 @@ function createTaskCard(task) {
     taskDeadlineColor = "on-track";
   }
 
-  console.log(task);
-
+  // creates div where card will be placed
   const cardBox = $("<div>");
+  // adds jquery and boostrap css classes for card functionality
   cardBox.addClass(
     "card draggable mb-2 task-card " + taskDeadlineColor.toString()
   );
+  // adds data attribute using unique id
   cardBox.attr("data-task-id", task.id);
+
+  //creates div in card body, adds class to card body
   const cardBody = $("<div>");
   cardBody.addClass("card-body");
+
+  // creates title element in card, adds class for card title, creates text for title
   const cardTitle = $("<h5>");
   cardTitle.addClass("card-title");
   cardTitle.text(task.title);
+
+  // creates paragraph element in card, adds class for card text, creates text for task description
   const cardText = $("<p>");
   cardText.addClass("card-text");
   cardText.text(task.description);
+
+  // creates second paragraph element in card, adds second class for card text, creates text for due date
   const cardDeadline = $("<p>");
   cardDeadline.addClass("card-text text-muted");
   cardDeadline.text(deadline.format("MM-DD-YYYY"));
+
+  // creates button element in card, adds class for delete button, creates delete button
   const cardDeleteBtn = $("<button>");
   cardDeleteBtn.addClass("btn btn-sm btn-danger float-end delete-task");
   cardDeleteBtn.attr("data-task-id", task.id);
   cardDeleteBtn.text("Delete");
+
+  // appends card title, card text, card deadline, card delete button, and card body
   cardBody.append(cardTitle);
   cardBody.append(cardText);
   cardBody.append(cardDeadline);
@@ -59,34 +74,33 @@ function createTaskCard(task) {
 
 // Todo: create a function to render the task list and make cards draggable
 function renderTaskList() {
-  console.log("Here");
+  // selects card div by id
   let todoEl = $("#todo-cards");
   let inprogressEl = $("#in-progress-cards");
   let doneEl = $("#done-cards");
+  // empties out conent from task list to prepare for reload from local storage
   todoEl.empty();
   inprogressEl.empty();
   doneEl.empty();
-  console.log("Here2");
 
+  // for loop goes through task list in local storage
   for (let i = 0; i < taskList.length; i++) {
-    console.log("Here " + i);
-
     const currentTask = taskList[i];
     const currentCard = createTaskCard(currentTask);
 
-    switch (currentTask.status) {
-      case "done":
-        doneEl.append(currentCard);
-        break;
-      case "in-progress":
-        inprogressEl.append(currentCard);
-        break;
-      case "to-do":
-        todoEl.append(currentCard);
+    // searches local storage by status, appends to corresponding lane
+    if (currentTask.status === "done") {
+      doneEl.append(currentCard);
+    } else if (currentTask.status === "in-progress") {
+      inprogressEl.append(currentCard);
+    } else if (currentTask.status === "to-do") {
+      todoEl.append(currentCard);
     }
 
+    // creates event listener to delete card on click
     $(".delete-task").on("click", handleDeleteTask);
 
+    // uses jquery, makes cards "draggable"
     $(".task-card").draggable({
       opacity: 0.7,
       zIndex: 100,
@@ -105,24 +119,34 @@ function renderTaskList() {
 
 // Todo: create a function to handle adding a new task
 function handleAddTask(event) {
+  // prevents page from reloading
   event.preventDefault();
+  // selects element by id, retrives user input values
   const taskTitle = $("#task-title").val();
   const taskDescription = $("#task-description").val();
   const taskDeadline = $("#task-deadline").val();
 
+  // creates object with key values from user input
   const newTask = {
+    // assigns task unique id
     id: generateTaskId(),
     title: taskTitle,
     description: taskDescription,
     deadline: taskDeadline,
+    // must start in "to-do" status
     status: "to-do",
   };
 
+  // adds new task on the end of array
   taskList.push(newTask);
+  // makes current list of tasks into string for local storage
   localStorage.setItem("tasks", JSON.stringify(taskList));
+  // makes current unique id into string for local storage
   localStorage.setItem("nextId", JSON.stringify(nextId));
 
+  // selects modal by id, modal method "hides" modal
   $("#formModal").modal("hide");
+  // calls function that loads tasks into lanes
   renderTaskList();
 }
 
